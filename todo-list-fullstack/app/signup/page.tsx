@@ -1,23 +1,23 @@
-import SignInForm from "@/components/forms/sign-in-form";
+import SignUpForm from "@/components/forms/sign-up-form";
 import Link from "next/link";
 
-export default function Home() {
+export default function Signup() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-white px-4">
             <div className="max-w-md w-full bg-white shadow-lg rounded-2xl p-8">
                 <h1 className="text-2xl font-semibold text-gray-800 text-center mb-1">
-                    Sign In
+                    Sign Up
                 </h1>
                 <p className="text-sm text-gray-500 text-center mb-6">
-                    Please enter your email and password
+                    Please enter your information
                 </p>
 
-                <SignInForm/>
+                <SignUpForm/>
 
                 <div className="mt-6 text-center text-sm text-gray-600">
-                    Don’t have an account?{' '}
-                    <Link href="/signup" className="text-indigo-600 hover:underline">
-                        Sign Up
+                    Already have an account?{' '}
+                    <Link href="/" className="text-indigo-600 hover:underline">
+                        Sign In
                     </Link>
                 </div>
             </div>

@@ -1,7 +1,6 @@
 import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
-import "./globals.css";
-import Layout from "@/components/layout/layout";
+import "../app/globals.css";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -14,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "todo list",
-    description: "manage todo list app",
+    title: "todo login",
+    description: "login to manage todo",
 };
 
 export default function RootLayout({
@@ -28,10 +27,7 @@ export default function RootLayout({
         <body suppressHydrationWarning
               className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-        <Layout>
-            {children}
-        </Layout>
-
+        {children}
         </body>
         </html>
     );

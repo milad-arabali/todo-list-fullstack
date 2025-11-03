@@ -2,7 +2,7 @@
 import React, {useState} from "react";
 import {HiOutlineMenu, HiOutlineX} from "react-icons/hi";
 
-export default function Layout({children}: { children: React.ReactNode }) {
+export default function TodoLayout({children}: { children: React.ReactNode }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     return (
         <div

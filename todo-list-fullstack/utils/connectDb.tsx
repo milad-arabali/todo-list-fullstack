@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-async function connectDb() {
+async function connectDataBase() {
 
     try {
         // if (mongoose.connections[0].readyState) return;
@@ -16,4 +16,4 @@ async function connectDb() {
 
 }
 
-export default connectDb;
+export default connectDataBase;
