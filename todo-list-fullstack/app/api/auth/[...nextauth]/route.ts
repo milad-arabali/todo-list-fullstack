@@ -1,11 +1,16 @@
 import NextAuth, {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import connectDb from "@/utils/connectDb";
 import User from "@/models/users";
 import {comparePassword} from "@/utils/auth";
 
 export const authOptions: NextAuthOptions = {
     providers: [
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+        }),
         CredentialsProvider({
             name: "Credentials",
             credentials: {
@@ -42,12 +47,6 @@ export const authOptions: NextAuthOptions = {
     pages: {
         signIn: "/signin",
     },
-    // callbacks: {
-    //     async redirect({url, baseUrl}) {
-    //         return "/todo";
-    //     }
-    // },
-
     secret: process.env.SECRET_KEY,
 };
 

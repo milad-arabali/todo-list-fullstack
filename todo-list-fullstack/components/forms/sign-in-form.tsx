@@ -1,9 +1,9 @@
 'use client';
-import {useActionState} from 'react';
+
+import {useActionState, useTransition} from 'react';
 import useSWRMutation from 'swr/mutation';
 import {signIn} from 'next-auth/react';
-import {useRouter} from "next/navigation";
-
+import {useRouter} from 'next/navigation';
 
 async function loginRequest(
     url: string,
@@ -20,6 +20,8 @@ async function loginRequest(
 export default function SignInForm() {
     const mutation = useSWRMutation('/api/auth/signin', loginRequest);
     const router = useRouter();
+    const [isPending, startTransition] = useTransition();
+
     async function formHandler(
         prevState: any,
         formData: FormData
@@ -41,6 +43,7 @@ export default function SignInForm() {
 
         try {
             const res = await mutation.trigger({email, password});
+
             if (res?.error) {
                 return {
                     success: false,
@@ -49,7 +52,11 @@ export default function SignInForm() {
                 };
             }
 
-            await router.push("/todo");
+
+            startTransition(() => {
+                router.push('/todo');
+            });
+
             return {
                 success: true,
                 values: {email: '', password: ''},
@@ -70,32 +77,31 @@ export default function SignInForm() {
         message: '',
     });
 
-    if (mutation.isMutating) return <p>Submitting...</p>;
+    const handleGoogleSignIn = () => {
+        startTransition(() => {
+            signIn('google', {callbackUrl: '/todo'}).then();
+        });
+    };
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-sm mx-auto">
             <form action={formAction} className="space-y-3">
-                <div>
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        defaultValue={state.values.email}
-                        className="w-full border rounded-lg px-3 py-2"
-                        required
-                    />
-                </div>
-
-                <div>
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        defaultValue={state.values.password}
-                        className="w-full border rounded-lg px-3 py-2"
-                        required
-                    />
-                </div>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    defaultValue={state.values.email}
+                    className="w-full border rounded-lg px-3 py-2"
+                    required
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    defaultValue={state.values.password}
+                    className="w-full border rounded-lg px-3 py-2"
+                    required
+                />
 
                 <button
                     type="submit"
@@ -105,6 +111,27 @@ export default function SignInForm() {
                     {mutation.isMutating ? 'Logging in...' : 'Sign In'}
                 </button>
             </form>
+
+            <div className="flex items-center justify-center my-2">
+                <div className="border-t w-1/3"/>
+                <span className="mx-2 text-gray-500 text-sm">or</span>
+                <div className="border-t w-1/3"/>
+            </div>
+
+            <button
+                onClick={handleGoogleSignIn}
+                disabled={isPending}
+                className="w-full flex items-center justify-center gap-2 py-2 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition"
+            >
+                <img
+                    src="https://www.svgrepo.com/show/475656/google-color.svg"
+                    alt="Google"
+                    className="w-5 h-5"
+                />
+                <span className="text-gray-700 font-medium">
+          {isPending ? 'Connecting...' : 'Sign in with Google'}
+        </span>
+            </button>
 
             {state.message && (
                 <p

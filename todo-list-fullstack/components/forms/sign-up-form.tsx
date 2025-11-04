@@ -1,7 +1,9 @@
 'use client';
 
-import {useActionState} from 'react';
+import {useActionState, useTransition} from 'react';
 import useSWRMutation from 'swr/mutation';
+import {signIn} from 'next-auth/react';
+import {useRouter} from "next/navigation";
 
 async function signupRequest(
     url: string,
@@ -22,6 +24,8 @@ async function signupRequest(
 
 export default function SignUpForm() {
     const mutation = useSWRMutation('/api/auth/signup', signupRequest);
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
 
     async function formHandler(
         prevState: any,
@@ -46,11 +50,15 @@ export default function SignUpForm() {
 
         try {
             await mutation.trigger({name, family, email, password});
+            startTransition(() => {
+                router.push('/todo');
+            });
             return {
                 success: true,
-                values: {name: '', family: '', email: '', password: ''},
+                values: prevState.values,
                 message: '✅ Registration completed successfully!',
             };
+
         } catch (err) {
             return {
                 success: false,
@@ -66,8 +74,14 @@ export default function SignUpForm() {
         message: '',
     });
 
+    const handleGoogleSignUp = () => {
+        startTransition(() => {
+            signIn('google', {callbackUrl: '/todo'}).then();
+        });
+    };
+
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-sm mx-auto">
             <form action={formAction} className="space-y-3">
                 <input
                     type="text"
@@ -110,6 +124,27 @@ export default function SignUpForm() {
                     {mutation.isMutating ? 'Submitting...' : 'Sign Up'}
                 </button>
             </form>
+
+            <div className="flex items-center justify-center my-2">
+                <div className="border-t w-1/3"/>
+                <span className="mx-2 text-gray-500 text-sm">or</span>
+                <div className="border-t w-1/3"/>
+            </div>
+
+            <button
+                onClick={handleGoogleSignUp}
+                disabled={isPending}
+                className="w-full flex items-center justify-center gap-2 py-2 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition"
+            >
+                <img
+                    src="https://www.svgrepo.com/show/475656/google-color.svg"
+                    alt="Google"
+                    className="w-5 h-5"
+                />
+                <span className="text-gray-700 font-medium">
+                    {isPending ? 'Connecting...' : 'Sign up with Google'}
+                </span>
+            </button>
 
             {state.message && (
                 <p
