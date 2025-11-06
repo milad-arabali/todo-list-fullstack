@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import TodoColumn from "./todo-column";
 
 type Todo = { title: string; status: string };
@@ -38,11 +38,26 @@ const TodoList = () => {
         fetchTodos().then();
     }, []);
 
-    if (loading) return <p className="text-center p-4">در حال دریافت داده‌ها...</p>;
-    if (error) return <p className="text-red-500 text-center p-4">خطا: {error}</p>;
+    if (loading) return <p className="text-center p-4">load data...</p>;
+    if (error) return <p className="text-red-500 text-center p-4">error: {error}</p>;
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full max-w-6xl p-4">
+        <div
+            className="   grid
+    grid-cols-1
+    sm:grid-cols-2
+    lg:grid-cols-3
+    xl:grid-cols-4
+    gap-6
+    w-full
+    max-w-7xl
+    mx-auto
+    p-6
+    justify-center
+    items-start
+    place-items-center
+  "
+        >
             {statuses.map((status) => (
                 <TodoColumn
                     key={status}
@@ -52,6 +67,7 @@ const TodoList = () => {
                 />
             ))}
         </div>
+
     );
 };
 
