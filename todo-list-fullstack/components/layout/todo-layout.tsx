@@ -1,6 +1,7 @@
 "use client";
 import React, {useState} from "react";
 import {HiOutlineMenu, HiOutlineX} from "react-icons/hi";
+import Link from "next/link";
 
 export default function TodoLayout({children}: { children: React.ReactNode }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,13 +28,13 @@ export default function TodoLayout({children}: { children: React.ReactNode }) {
                 >
                     <div className="absolute -top-6 left-0 w-full h-6 bg-gray-800 rounded-tr-lg shadow-lg hidden sm:block"></div>
                     <nav className="space-y-2 relative z-10">
-                        <a href="#" className="block px-3 py-2 rounded hover:bg-gray-700">
+                        <Link href="/todo" className="block px-3 py-2 rounded hover:bg-gray-700">
                             🏠 Dashboard
-                        </a>
-                        <a href="#" className="block px-3 py-2 rounded hover:bg-gray-700">
-                            ✅ Todos
-                        </a>
-                        <a href="#" className="block px-3 py-2 rounded hover:bg-gray-700">
+                        </Link>
+                        <Link href="/todo/add-todo" className="block px-3 py-2 rounded hover:bg-gray-700">
+                            ✅ AddTodos
+                        </Link>
+                        <a href="/todo/setting" className="block px-3 py-2 rounded hover:bg-gray-700">
                             ⚙️ Settings
                         </a>
                     </nav>
@@ -44,7 +45,7 @@ export default function TodoLayout({children}: { children: React.ReactNode }) {
                 </main>
             </div>
 
-            <footer className="bg-gray-900 text-gray-200 text-center py-4">
+            <footer className="bg-[#0077b6] text-gray-200 text-center py-4">
                 TodoList © {new Date().getFullYear()}
             </footer>
         </div>
