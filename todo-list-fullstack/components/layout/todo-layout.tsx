@@ -34,8 +34,8 @@ export default function TodoLayout({children}: { children: React.ReactNode }) {
                         <Link href="/todo/add-todo" className="block px-3 py-2 rounded hover:bg-gray-700">
                             ✅ AddTodos
                         </Link>
-                        <a href="/todo/setting" className="block px-3 py-2 rounded hover:bg-gray-700">
-                            ⚙️ Settings
+                        <a href="/todo/profile" className="block px-3 py-2 rounded hover:bg-gray-700">
+                            ⚙️ Profile
                         </a>
                     </nav>
                 </aside>
