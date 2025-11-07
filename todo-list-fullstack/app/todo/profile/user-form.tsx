@@ -1,17 +1,28 @@
 "use client";
 
-import {useState} from "react";
+import { useState, useEffect } from "react";
 
-export default function UserForm({user}: any) {
+export default function UserForm({ user }: any) {
     const [form, setForm] = useState({
-        name: user.name || "",
-        family: user.family || "",
+        name: "",
+        family: "",
+        password: "",
     });
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
+    useEffect(() => {
+        if (user) {
+            setForm({
+                name: user.name ?? "",
+                family: user.family ?? "",
+                password: "",
+            });
+        }
+    }, [user]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({...form, [e.target.name]: e.target.value});
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -21,15 +32,18 @@ export default function UserForm({user}: any) {
 
         const res = await fetch("/api/profile", {
             method: "PATCH",
-            headers: {"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(form),
         });
 
         const data = await res.json();
         if (data.success) setMessage("✅ Updated successfully!");
         else setMessage(`❌ ${data.error || "Failed to update"}`);
+
         setLoading(false);
     };
+
+    if (!user) return <p>Loading...</p>;
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
@@ -64,6 +78,20 @@ export default function UserForm({user}: any) {
                     name="family"
                     value={form.family}
                     onChange={handleChange}
+                    className="p-2 border rounded-md dark:bg-gray-800 dark:text-white w-full"
+                />
+            </div>
+
+            <div>
+                <label className="text-sm text-gray-500 dark:text-gray-300 mb-1 block">
+                    Password
+                </label>
+                <input
+                    name="password"
+                    type="password"
+                    value={form.password}
+                    onChange={handleChange}
+                    placeholder="Leave blank to keep current password"
                     className="p-2 border rounded-md dark:bg-gray-800 dark:text-white w-full"
                 />
             </div>

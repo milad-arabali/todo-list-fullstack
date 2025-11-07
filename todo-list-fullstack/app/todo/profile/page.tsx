@@ -3,6 +3,18 @@ import {getServerSession} from "next-auth";
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import UserForm from "@/app/todo/profile/user-form";
 import {headers} from "next/headers";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Profile | Todo App",
+    description: "Manage your profile and account settings",
+    openGraph: {
+        title: "Profile | Todo App",
+        description: "Manage your profile and account settings",
+        url: "http://localhost:3000/todo/profile",
+        type: "website",
+    },
+};
 
 export default async function Profile() {
     const session = await getServerSession(authOptions);

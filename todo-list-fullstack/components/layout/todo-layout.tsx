@@ -2,6 +2,7 @@
 import React, {useState} from "react";
 import {HiOutlineMenu, HiOutlineX} from "react-icons/hi";
 import Link from "next/link";
+import {signOut} from "next-auth/react";
 
 export default function TodoLayout({children}: { children: React.ReactNode }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -26,7 +27,8 @@ export default function TodoLayout({children}: { children: React.ReactNode }) {
                      transform md:transform-none transition-transform duration-300 ease-in-out
                      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
                 >
-                    <div className="absolute -top-6 left-0 w-full h-6 bg-gray-800 rounded-tr-lg shadow-lg hidden sm:block"></div>
+                    <div
+                        className="absolute -top-6 left-0 w-full h-6 bg-gray-800 rounded-tr-lg shadow-lg hidden sm:block"></div>
                     <nav className="space-y-2 relative z-10">
                         <Link href="/todo" className="block px-3 py-2 rounded hover:bg-gray-700">
                             🏠 Dashboard
@@ -34,9 +36,19 @@ export default function TodoLayout({children}: { children: React.ReactNode }) {
                         <Link href="/todo/add-todo" className="block px-3 py-2 rounded hover:bg-gray-700">
                             ✅ AddTodos
                         </Link>
-                        <a href="/todo/profile" className="block px-3 py-2 rounded hover:bg-gray-700">
+                        <Link href="/todo/profile" className="block px-3 py-2 rounded hover:bg-gray-700">
                             ⚙️ Profile
-                        </a>
+                        </Link>
+                        <Link
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                signOut({callbackUrl: "/"}).then();
+                            }}
+                            className="block px-3 py-2 rounded hover:bg-gray-700"
+                        >
+                            🔒 Sign Out
+                        </Link>
                     </nav>
                 </aside>
 
