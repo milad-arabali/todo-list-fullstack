@@ -2,7 +2,7 @@
 
 A modern **Todo List application** built with **Next.js 16 (App Router)**, **TypeScript**, **TailwindCSS**, and **NextAuth.js** for authentication. This app allows users to register, log in, manage todos, and update their profile securely.  
 
-Live Demo: [https://todo-list-9twkhl4xy-tedt1.vercel.app/](https://todo-list-9twkhl4xy-tedt1.vercel.app/)
+[Live Demo](https://todo-list-9twkhl4xy-tedt1.vercel.app/){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
