@@ -117,3 +117,47 @@ export async function GET(req: Request) {
         );
     }
 }
+
+export async function PATCH(req: Request) {
+    const dbError = await ensureDbConnection();
+    if (dbError) return dbError;
+    const body = await req.json();
+    const {id, status} = body;
+
+    if (!id || !status) {
+        return NextResponse.json(
+            {error: "All fields are required"},
+            {status: 400}
+        );
+    }
+
+    try {
+        const result = await User.updateOne(
+            {"todos._id": id},
+            {$set: {"todos.$.status": status}}
+        );
+
+        if (result.modifiedCount === 0) {
+            return NextResponse.json(
+                {error: "Todo not found"},
+                {status: 404}
+            );
+        }
+
+        return NextResponse.json(
+            {
+                success: true,
+                message: "Todo updated successfully",
+            },
+            {status: 200}
+        );
+    } catch (error: any) {
+        console.error(error);
+        return NextResponse.json(
+            {error: "Failed to update todo", details: error.message},
+            {status: 500}
+        );
+    }
+}
+
+
